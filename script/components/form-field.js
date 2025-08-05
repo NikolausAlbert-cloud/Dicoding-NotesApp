@@ -45,21 +45,75 @@ class FormField extends HTMLElement {
     }
   }
 
+  _updateStyle() {
+    this._style.textContent = `
+      :host {
+        display: block;
+        backround-color: #00809D;
+      }
+
+      .floating-form {
+        width: 100%;
+      }
+
+      .form-group {
+        margin: 16px 0
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weigth: bold;
+      }
+
+      input, textarea {
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        border: none;
+        background-color: #FCF8DD;
+        color: blue;
+        overflow: auto;
+      }
+
+      textarea {
+        height: 200px;
+        
+      }
+
+      button {
+        width: 30%;
+        height: 40px;
+        background-color: #00809D;
+        color: white;
+        border-radius: 4px;
+        border: none;
+        font-weight: bold;
+        padding: 0px;
+      }
+
+      button:hover {
+        background-color: #00657b;
+        cursor: pointer;
+      }
+    `
+  }
+
   render() {
     this._emptyContent();
     this._updateStyle();
 
-    this.shadowRoot.appendChild(this._style);
+    this._shadowRoot.appendChild(this._style);
     this._shadowRoot.innerHTML += `
       <div class="floating-form">
         <form>
-          <div class="form-group>
+          <div class="form-group">
             <label for="title">Title</label>
             <input type="text" id="title" placehoder="Title" required />
           </div>
-          <div class="form-group>
-            <label id="body" for="body">Body</label>
-            <textarea type="text" id="body" placehoder="Body" required />
+          <div class="form-group">
+            <label for="body">Body</label>
+            <textarea type="text" id="body" placehoder="Body" required ></textarea>
           </div>
           <button type="submit">Submit</button>
         </form>
