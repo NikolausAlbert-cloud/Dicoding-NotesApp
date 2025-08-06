@@ -18,6 +18,8 @@ class FooterBar extends HTMLElement {
         background-color: #00809D;
         color: white;
         display: flex;
+        position: fixed;
+        bottom: 0;
       }
 
       .footer-bar-container {

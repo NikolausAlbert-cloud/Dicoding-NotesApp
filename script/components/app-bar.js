@@ -17,6 +17,9 @@ class AppBar extends HTMLElement {
         color: white;
         background-color: #00809D;
         box-shadow: 0 4px 2px -2px gray;
+        position: sticky;
+        top: 0;
+        z-index: 1;
       }
       
        h1 {

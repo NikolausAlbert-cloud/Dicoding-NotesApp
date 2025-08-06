@@ -2,8 +2,8 @@ import { validationTitleHandler, validationBodyHandler } from "./form-validation
 
 const validation = () => {
   const form = document.querySelector("form");
-  const title = form.Elements("title");
-  const body = form.Elements("body");
+  const title = form.elements("title");
+  const body = form.elements("body");
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
