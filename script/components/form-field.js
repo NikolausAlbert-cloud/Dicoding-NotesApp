@@ -52,10 +52,6 @@ class FormField extends HTMLElement {
         backround-color: #00809D;
       }
 
-      .floating-form {
-        width: 100%;
-      }
-
       .form-group {
         margin: 16px 0
       }
@@ -74,11 +70,19 @@ class FormField extends HTMLElement {
         background-color: #FCF8DD;
         color: blue;
         overflow: auto;
+        box-sizing: border-box;
       }
 
       textarea {
         height: 200px;
-        
+      }
+
+      .validationMessage {
+        color: red;
+      }
+
+      .input:user-invalid {
+        border: 1px solid red;
       }
 
       button {
@@ -88,6 +92,7 @@ class FormField extends HTMLElement {
         color: white;
         border-radius: 4px;
         border: none;
+        font-size: 1.2em;
         font-weight: bold;
         padding: 0px;
       }
@@ -95,6 +100,13 @@ class FormField extends HTMLElement {
       button:hover {
         background-color: #00657b;
         cursor: pointer;
+      }
+
+      @media screen and (max-width: 768px) {
+        button {
+          width: 100%;
+          font-size: 1em;
+        }
       }
     `
   }
@@ -109,11 +121,27 @@ class FormField extends HTMLElement {
         <form>
           <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" id="title" placehoder="Title" required />
+            <input 
+              type="text" 
+              id="title" 
+              placehoder="Title" 
+              aria-describedby="titleInputValidation" 
+              minlength="2"
+              required 
+            />
+            <p id="titleInputValidation" class="validationMessage"></p>
           </div>
           <div class="form-group">
             <label for="body">Body</label>
-            <textarea type="text" id="body" placehoder="Body" required ></textarea>
+            <textarea 
+              type="text" 
+              id="body" 
+              placehoder="Body" 
+              aria-describedby="bodyInputValidation"
+              minlength="5" 
+              required 
+            ></textarea>
+            <p id="bodyInputValidation" class="validationMessage"></p>
           </div>
           <button type="submit">Submit</button>
         </form>
