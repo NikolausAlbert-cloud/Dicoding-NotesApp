@@ -1,7 +1,6 @@
 class FormField extends HTMLElement {
   _shadowRoot = null;
   _style = null;
-  _submitEvent = "submit";
 
   constructor() {
     super();
@@ -17,9 +16,34 @@ class FormField extends HTMLElement {
   }
 
   connectedCallback() {
-    this._shadowRoot
-      .querySelector("form")
-      .addEventListener("submit", (e) => this._onFormSubmit(e, this));
+    const form = this._shadowRoot.querySelector("form");
+    const title = this._shadowRoot.querySelector("#title");
+    const body = this._shadowRoot.querySelector("#body");
+  
+    form.addEventListener("submit", (e) => {
+      this._onFormSubmit(e);
+    });
+
+    const validationHandler = (e) => {
+      const { target } = e;
+      const isValid = target.validity.valid;
+      const errorMessage = target.validationMessage;
+
+      const connectedValidationId = target.getAttribute("aria-describedby");
+      const connectedValidationEl = this._shadowRoot.getElementById(connectedValidationId);
+
+      if (connectedValidationEl) {
+        connectedValidationEl.innerText = isValid ? "" : errorMessage;
+      }
+    }
+  
+    title.addEventListener("change", validationHandler);
+    title.addEventListener("invalid", validationHandler);
+    body.addEventListener("change", validationHandler);
+    body.addEventListener("invalid", validationHandler);
+
+    title.addEventListener("blur", validationHandler);
+    body.addEventListener("blur", validationHandler);
   }
 
   _generateId() {
@@ -29,8 +53,7 @@ class FormField extends HTMLElement {
     return `notes-${randomString}`;
   }
 
-  _onFormSubmit(e, formSubmitInstance) {
-    formSubmitInstance.dispatchEvent(new CustomEvent("submit"));
+  _onFormSubmit(e) {
     e.preventDefault();
 
     const title = this._shadowRoot.querySelector("#title").value;
@@ -43,13 +66,20 @@ class FormField extends HTMLElement {
       createAt: new Date().toISOString(),
       archived: false
     }
+
+    this.dispatchEvent(new CustomEvent("submit-form", {
+      detail: data,
+      bubble: true,
+      composed: true
+    }))
+
+    console.log("Form submitted:", data);
   }
 
   _updateStyle() {
     this._style.textContent = `
       :host {
         display: block;
-        backround-color: #00809D;
       }
 
       .form-group {
@@ -59,7 +89,7 @@ class FormField extends HTMLElement {
       label {
         display: block;
         margin-bottom: 8px;
-        font-weigth: bold;
+        font-weight: bold;
       }
 
       input, textarea {
@@ -111,53 +141,9 @@ class FormField extends HTMLElement {
     `
   }
 
-  _validation() {
-    const form = document.querySelector("form");
-    const title = form.elements("title");
-    const body = form.elements("body");
-  
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-    });
-  
-    title.addEventListener("change", validationTitleHandler);
-    title.addEventListener("invalid", validationTitleHandler);
-    body.addEventListener("change", validationBodyHandler);
-    body.addEventListener("invalid", validationBodyHandler);
-    
-    title.addEventListner("blur", (e) => {
-      const isValid = e.target.validity.valid; 
-      const errorMessage = e.target.validationMessage; 
-  
-      const connectedValidationId = document.getAttribute("aria-describedby");
-      const connectedValidationEl = connectedValidationId?.document.getElementById(connectedValidationId);
-  
-      if (connectedValidationEl && errorMessage && !isValid) {
-        connectedValidationEl.innerText = errorMessage;
-      } else {
-        connectedValidationEl.innerText = "";
-      }
-    });
-    
-    body.addEventListner("blur", (e) => {
-      const isValid = e.target.validity.valid; 
-      const errorMessage = e.target.validationMessage; 
-  
-      const connectedValidationId = document.getAttribute("aria-describedby");
-      const connectedValidationEl = connectedValidationId?.document.getElementById(connectedValidationId);
-  
-      if (connectedValidationEl && errorMessage && !isValid) {
-        connectedValidationEl.innerText = errorMessage;
-      } else {
-        connectedValidationEl.innerText = "";
-      }
-    });
-  }
-
   render() {
     this._emptyContent();
     this._updateStyle();
-    // this._validation();
 
     this._shadowRoot.appendChild(this._style);
     this._shadowRoot.innerHTML += `
@@ -168,7 +154,7 @@ class FormField extends HTMLElement {
             <input 
               type="text" 
               id="title" 
-              placehoder="Title" 
+              placeholder="Type a title..." 
               aria-describedby="titleInputValidation" 
               minlength="2"
               required 
@@ -180,7 +166,7 @@ class FormField extends HTMLElement {
             <textarea 
               type="text" 
               id="body" 
-              placehoder="Body" 
+              placeholder="Type a content..." 
               aria-describedby="bodyInputValidation"
               minlength="5" 
               required 
