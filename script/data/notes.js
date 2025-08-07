@@ -106,4 +106,10 @@ const notesData = [
   },
 ];
 
+const formFieldElement = document.querySelector("form-field");
+formFieldElement.addEventListener("form-submit", (e) => {
+  const newData = e.detail;
+  notes.unshift(newData);
+})
+
 export { notesData };

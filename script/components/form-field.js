@@ -56,6 +56,10 @@ class FormField extends HTMLElement {
   _onFormSubmit(e) {
     e.preventDefault();
 
+    const textButton = this._shadowRoot.querySelector("button");
+    textButton.disabled = true;
+    textButton.style.backgroundColor = "#adcacfff";
+    textButton.innerText = "Saving...";
     const title = this._shadowRoot.querySelector("#title").value;
     const body = this._shadowRoot.querySelector("#body").value;
 
@@ -73,7 +77,13 @@ class FormField extends HTMLElement {
       composed: true
     }))
 
-    console.log("Form submitted:", data);
+    setTimeout(() => {
+      textButton.disabled = false;
+      textButton.innerText = "Submit";
+      textButton.style.backgroundColor = "#00809D";
+      console.log("Form submitted:", data);
+    }, 5000)
+   
   }
 
   _updateStyle() {
