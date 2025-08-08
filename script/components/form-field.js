@@ -82,7 +82,7 @@ class FormField extends HTMLElement {
       textButton.innerText = "Submit";
       textButton.style.backgroundColor = "#00809D";
       console.log("Form submitted:", data);
-    }, 5000)
+    }, 2000)
    
   }
 
