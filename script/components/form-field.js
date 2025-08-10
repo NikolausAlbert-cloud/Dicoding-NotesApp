@@ -56,6 +56,7 @@ class FormField extends HTMLElement {
   _onFormSubmit(e) {
     e.preventDefault();
 
+    const info = this._shadowRoot.querySelector(".info-postSubmit");
     const textButton = this._shadowRoot.querySelector("button");
     textButton.disabled = true;
     textButton.style.backgroundColor = "#adcacfff";
@@ -63,27 +64,39 @@ class FormField extends HTMLElement {
     const title = this._shadowRoot.querySelector("#title").value;
     const body = this._shadowRoot.querySelector("#body").value;
 
-    const data = {
-      id: this._generateId(),
-      title,
-      body,
-      createAt: new Date().toISOString(),
-      archived: false
-    }
+    info.innerText = "";
 
-    this.dispatchEvent(new CustomEvent("submit-form", {
-      detail: data,
-      bubble: true,
-      composed: true
-    }))
+    if (title || body) {
+      const data = {
+        id: this._generateId(),
+        title,
+        body,
+        createdAt: new Date().toISOString(),
+        archived: false
+      };
 
-    setTimeout(() => {
+      this.dispatchEvent(new CustomEvent("submit-form", {
+        detail: data,
+        bubble: true,
+        composed: true
+      }));
+
+      setTimeout(() => {
+        textButton.disabled = false;
+        textButton.innerText = "Submit";
+        textButton.style.backgroundColor = "#00809D";
+
+        this._shadowRoot.querySelector("#title").value = "";
+        this._shadowRoot.querySelector("#body").value = "";
+        info.innerText = "Post submitted successfully!";
+      }, 1000);
+
+    } else {
       textButton.disabled = false;
       textButton.innerText = "Submit";
       textButton.style.backgroundColor = "#00809D";
-      console.log("Form submitted:", data);
-    }, 2000)
-   
+      info.innerText = "Please fill in all fields.";
+    }
   }
 
   _updateStyle() {
@@ -125,6 +138,10 @@ class FormField extends HTMLElement {
         border: 1px solid red;
       }
 
+      .info-postSubmit {
+        color: blue;
+      }
+
       button {
         width: 30%;
         height: 40px;
@@ -152,10 +169,13 @@ class FormField extends HTMLElement {
   }
 
   render() {
-    this._emptyContent();
     this._updateStyle();
+    this._shadowRoot.innerHTML = "";
 
-    this._shadowRoot.appendChild(this._style);
+    if (!this._shadowRoot.contains(this._style)) {
+      this._shadowRoot.appendChild(this._style);
+    }
+
     this._shadowRoot.innerHTML += `
       <div class="floating-form">
         <form>
@@ -183,6 +203,7 @@ class FormField extends HTMLElement {
             ></textarea>
             <p id="bodyInputValidation" class="validationMessage"></p>
           </div>
+          <p class="info-postSubmit"></p>
           <button type="submit">Submit</button>
         </form>
       </div>

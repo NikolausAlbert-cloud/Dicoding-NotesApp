@@ -7,13 +7,13 @@ class Utils {
     element.style.display = "block";
     element.hidden = false;
   }
-  static emptyElement(element) {
+  static hideElement(element) {
     element.style.display = "none";
     element.hidden = true;
   }
 
   static isValidInteger(newValue) {
-    return Number.isNaN(newValue) || Number.isFinite(newValue);
+    return Number.isInteger(newValue);
   }
 }
 

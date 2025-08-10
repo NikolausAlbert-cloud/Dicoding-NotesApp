@@ -6,7 +6,7 @@ class NoteItem extends HTMLElement {
     title: "",
     body: "",
     createdAt: "",
-    archieved: false
+    archived: false
   }
 
   constructor() {
@@ -14,20 +14,18 @@ class NoteItem extends HTMLElement {
 
     this._shadowRoot = this.attachShadow({ mode: "open" });
     this._style = document.createElement("style");
-
-    this.render();
   }
 
   _emptyContent() {
     this._shadowRoot.innerHTML = "";
   }
 
-  set _note(value) {
+  set note(value) {
     this._note = value;
     this.render();
   }
 
-  get _note() {
+  get note() {
     return this._note;
   }
 
@@ -36,21 +34,51 @@ class NoteItem extends HTMLElement {
       :host {
         display: block;
       }
+      .note-item-container {
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+      }
+      h3 {
+        margin: 0 0 8px 0;
+      }
+      p {
+        margin: 0 0 4px 0;
+        color: #555;
+      }
     `
   }
 
   render() {
-    this._emptyContent();
     this._updateStyle();
-
+    this._shadowRoot.innerHTML = '';
     this._shadowRoot.appendChild(this._style);
-    this._shadowRoot.innerHTML += `
-      <div class="note-item-container" id="${this.note.id}>
-        <h3>${this.note.title}</h3>
-        <p>${this.note.createdAt}</p>
-        <p>${this.note.body}</p>
-      </div>
-    `
+
+    const formattedDate = new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }).format(new Date(this._note.createdAt));
+
+    // this._shadowRoot.innerHTML += `
+    //   <div class="note-item-container" id="${this._note.id}">
+    //     <h3>${this._note.title}</h3>
+    //     <p>${formattedDate}</p>
+    //     <p>${this._note.body}</p>
+    //   </div>
+    // `
+
+    const noteContent = document.createElement('div');
+    noteContent.className = 'note-item-container';
+    noteContent.id = this._note.id;
+    noteContent.innerHTML = `
+      <h3>${this._note.title}</h3>
+      <p>${formattedDate}</p>
+      <p>${this._note.body}</p>
+    `;
+
+    this._shadowRoot.appendChild(noteContent);
   }
 }
 

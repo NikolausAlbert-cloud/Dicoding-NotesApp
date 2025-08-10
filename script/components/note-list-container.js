@@ -1,6 +1,6 @@
 import Utils from "../utils";
 
-class NoteListContainer extends HTMLELement {
+class NoteListContainer extends HTMLElement {
   _shadowRoot = null;
   _style = null;
 
@@ -14,8 +14,8 @@ class NoteListContainer extends HTMLELement {
   constructor() {
     super();
 
-    const _shadowRoot = this.attachShadow({ mode: "open" });
-    const _style = document.createElement("style");
+    this._shadowRoot = this.attachShadow({ mode: "open" });
+    this._style = document.createElement("style");
 
     this.render();
   }
@@ -28,7 +28,7 @@ class NoteListContainer extends HTMLELement {
 
       .list {
         display: grid;
-        grid-template-columns: ${'1fr', repeat(this._column)};
+        grid-template-columns: repeat(${this._column}, 1fr);
         gap: ${this._gutter}px;
       }
     `
@@ -56,14 +56,10 @@ class NoteListContainer extends HTMLELement {
     return this._gutter;
   }
 
-  _emptyContent() {
-    this.innerHTML = "";
-  }
-
   render() {
-    this._emptyContent();
     this._updateStyle();
 
+    this._shadowRoot.innerHTML = "";
     this._shadowRoot.appendChild(this._style);
     this._shadowRoot.innerHTML += `
       <div class="list">
@@ -73,16 +69,16 @@ class NoteListContainer extends HTMLELement {
   }
 
   attributeChangeCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) return;
+
     switch(name) {
       case "column":
-        this.name = newValue;
+        this.column = newValue;
         break;
       case "gutter":
-        this.name = newValue;
+        this.gutter = newValue;
         break;
     }
-
-    this.render();
   }
 }
 

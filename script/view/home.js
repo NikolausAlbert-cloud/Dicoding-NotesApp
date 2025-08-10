@@ -1,42 +1,34 @@
-import { notesData, Notes } from "../data/notes.js";
-import Utils from "../utils.js";
+import { Notes } from "../data/notes.js";
 
 const home = () => {
-  const noteListSuperContainer = document.querySelector(".noteListSuperContainer");
   const noteListContainer = document.querySelector("note-list-container");
   
-  const onAddNotesHandler = (e) => {
-    const data = e.target.value;
-    console.log("newNote in home.js: ", data)
-    Notes.addNote(data);
- 
-    showAllNotes();
-  }
+  const renderNotes = (notes) => {
+    noteListContainer.innerHTML = "";
 
-  const displayNotes = (notes) => {
-    const noteItemElements = notes.map((note) => {
+    notes.forEach((note) => {
       const noteItemElement = document.createElement("note-item");
       noteItemElement.note = note;
-
-      return noteItemElement;
-    });
-
-    Utils.emptyElement(noteItemElements);
-    noteListContainer.append(...noteItemElements);
+      noteListContainer.appendChild(noteItemElement);
+    })
   }
 
-  const showAllNotes = () => {
-    Array.from(noteListSuperContainer.children).forEach((element) => {
-      Utils.emptyElement(element);
-    })
+  const onAddNotesHandler = (e) => {
+    const newData = e.detail;
+    Notes.addNote(newData);
 
-    Utils.showElement(noteListContainer);
-    // const notes = Notes.getAllNotes();
-    // displayNotes(notes);
+    const updatedNoteList = Notes.getAllNotes();
+    console.log("home updatedNoteList", updatedNoteList);
+    renderNotes(updatedNoteList);
   }
 
   const formFieldElement = document.querySelector("form-field");
-  formFieldElement.addEventListener("form-submit", onAddNotesHandler)
+  formFieldElement.addEventListener("submit-form", onAddNotesHandler)
+
+  const initialNotes = Notes.getAllNotes();
+  renderNotes(initialNotes);
 }
 
 export default home
+
+home();
