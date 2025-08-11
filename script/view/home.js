@@ -14,8 +14,8 @@ const home = () => {
     });
  
     console.log("home.js ...noteItemElements", ...noteItemElements);
-    noteListContainer.append(...noteItemElements);
-    console.log("home.js noteListContainer", noteListContainer);
+    noteListSuperContainer.append(...noteItemElements);
+    console.log("home.js noteListSuperContainer", noteListSuperContainer);
   };
 
   const onAddNotesHandler = (e) => {
