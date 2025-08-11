@@ -1,19 +1,25 @@
 import { Notes } from "../data/notes.js";
+import Utils from "../utils.js";
 
 const home = () => {
+  const noteListSuperContainer = document.querySelector(".noteListSuperContainer");
   const noteListContainer = document.querySelector("note-list-container");
-  
-  const renderNotes = (notes) => {
-    noteListContainer.innerHTML = "";
 
-    notes.forEach((note) => {
-      const noteItemElement = document.createElement("note-item");
+  const renderNotes = (notes) => {
+    const noteItemElements = notes.map((note) => {
+      const noteItemElement = document.createElement('note-item');
       noteItemElement.note = note;
-      noteListContainer.appendChild(noteItemElement);
-    })
-  }
+
+      return noteItemElement;
+    });
+ 
+    console.log("home.js ...noteItemElements", ...noteItemElements);
+    noteListContainer.append(...noteItemElements);
+    console.log("home.js noteListContainer", noteListContainer);
+  };
 
   const onAddNotesHandler = (e) => {
+    e.preventDefault();
     const newData = e.detail;
     Notes.addNote(newData);
 

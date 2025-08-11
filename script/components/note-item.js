@@ -14,6 +14,11 @@ class NoteItem extends HTMLElement {
 
     this._shadowRoot = this.attachShadow({ mode: "open" });
     this._style = document.createElement("style");
+
+    this._shadowRoot.appendChild(this._style);
+
+    this._contentWrapper = document.createElement('div');
+    this._shadowRoot.appendChild(this._contentWrapper);
   }
 
   _emptyContent() {
@@ -52,8 +57,6 @@ class NoteItem extends HTMLElement {
 
   render() {
     this._updateStyle();
-    this._shadowRoot.innerHTML = '';
-    this._shadowRoot.appendChild(this._style);
 
     const formattedDate = new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
@@ -61,24 +64,13 @@ class NoteItem extends HTMLElement {
       day: 'numeric'
     }).format(new Date(this._note.createdAt));
 
-    // this._shadowRoot.innerHTML += `
-    //   <div class="note-item-container" id="${this._note.id}">
-    //     <h3>${this._note.title}</h3>
-    //     <p>${formattedDate}</p>
-    //     <p>${this._note.body}</p>
-    //   </div>
-    // `
-
-    const noteContent = document.createElement('div');
-    noteContent.className = 'note-item-container';
-    noteContent.id = this._note.id;
-    noteContent.innerHTML = `
-      <h3>${this._note.title}</h3>
-      <p>${formattedDate}</p>
-      <p>${this._note.body}</p>
+    this._contentWrapper.innerHTML = `
+      <div class="note-item-container" id="${this._note.id}">
+        <h3>${this._note.title}</h3>
+        <p>${formattedDate}</p>
+        <p>${this._note.body}</p>
+      </div>
     `;
-
-    this._shadowRoot.appendChild(noteContent);
   }
 }
 
