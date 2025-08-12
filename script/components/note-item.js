@@ -1,5 +1,5 @@
 class NoteItem extends HTMLElement {
-  _shadowRoot = null
+  // _shadowRoot = null
   _style = null
   _note = {
     id: "",
@@ -12,17 +12,18 @@ class NoteItem extends HTMLElement {
   constructor() {
     super();
 
-    this._shadowRoot = this.attachShadow({ mode: "open" });
+    // this._shadowRoot = this.attachShadow({ mode: "open" });
     this._style = document.createElement("style");
 
-    this._shadowRoot.appendChild(this._style);
+    // this._shadowRoot.appendChild(this._style);
 
     this._contentWrapper = document.createElement('div');
-    this._shadowRoot.appendChild(this._contentWrapper);
+    // this._shadowRoot.appendChild(this._contentWrapper);
   }
 
   _emptyContent() {
-    this._shadowRoot.innerHTML = "";
+    // this._shadowRoot.innerHTML = "";
+    this.innerHTML = "";
   }
 
   set note(value) {
@@ -57,6 +58,7 @@ class NoteItem extends HTMLElement {
 
   render() {
     this._updateStyle();
+    console.log("note-item this_note", this._note);
 
     const formattedDate = new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
