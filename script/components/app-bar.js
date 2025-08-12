@@ -1,3 +1,5 @@
+import Utils from "../utils.js";
+
 class AppBar extends HTMLElement {
   _shadowRoot = null;
   _style = null;
@@ -31,16 +33,12 @@ class AppBar extends HTMLElement {
     `;
   }
 
-  _emptyContent() {
-    this._shadowRoot.innerHTML = "";
-  }
-
   connectedCallback() {
     this.render();
   }
 
   render() {
-    this._emptyContent();
+    Utils.emptyElement(this._shadowRoot);
     this._updateStyle();
 
     this._shadowRoot.appendChild(this._style);

@@ -1,5 +1,4 @@
 import { Notes } from "../data/notes.js";
-import Utils from "../utils.js";
 
 const home = () => {
   const noteListSuperContainer = document.querySelector(".noteListSuperContainer");
@@ -14,8 +13,8 @@ const home = () => {
     });
  
     console.log("home.js ...noteItemElements", ...noteItemElements);
-    noteListSuperContainer.append(...noteItemElements);
-    console.log("home.js noteListSuperContainer", noteListSuperContainer);
+    noteListContainer.append(...noteItemElements);
+    console.log("home.js noteListSuperContainer", noteListContainer);
   };
 
   const onAddNotesHandler = (e) => {
@@ -36,5 +35,3 @@ const home = () => {
 }
 
 export default home
-
-home();

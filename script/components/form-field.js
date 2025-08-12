@@ -1,3 +1,5 @@
+import Utils from "../utils.js";
+
 class FormField extends HTMLElement {
   _shadowRoot = null;
   _style = null;
@@ -9,10 +11,6 @@ class FormField extends HTMLElement {
     this._style = document.createElement("style");
 
     this.render();
-  }
-
-  _emptyContent() {
-    this._shadowRoot.innerHTML = "";
   }
 
   connectedCallback() {
@@ -170,7 +168,7 @@ class FormField extends HTMLElement {
 
   render() {
     this._updateStyle();
-    this._shadowRoot.innerHTML = "";
+    Utils.emptyElement(this._shadowRoot);
 
     if (!this._shadowRoot.contains(this._style)) {
       this._shadowRoot.appendChild(this._style);

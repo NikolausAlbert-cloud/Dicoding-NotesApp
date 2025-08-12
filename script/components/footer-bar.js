@@ -1,3 +1,5 @@
+import Utils from "../utils";
+
 class FooterBar extends HTMLElement {
   _shadowRoot = null;
   _style = null;
@@ -46,16 +48,12 @@ class FooterBar extends HTMLElement {
     `
   }
 
-  _emptyStyle() {
-    this._shadowRoot.innerHTML = "";
-  }
-
   connectedCallback() {
     this.render();
   }
 
   render() {
-    this._emptyStyle();
+    Utils.emptyElement(this._shadowRoot);
     this._updateStyle();
 
     this._shadowRoot.appendChild(this._style);

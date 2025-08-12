@@ -1,4 +1,4 @@
-import Utils from "../utils";
+import Utils from "../utils.js";
 
 class NoteListContainer extends HTMLElement {
   _shadowRoot = null;
@@ -59,7 +59,7 @@ class NoteListContainer extends HTMLElement {
   render() {
     this._updateStyle();
 
-    this._shadowRoot.innerHTML = "";
+    Utils.emptyElement(this._shadowRoot);
     this._shadowRoot.appendChild(this._style);
     this._shadowRoot.innerHTML += `
       <div class="list">
@@ -68,7 +68,7 @@ class NoteListContainer extends HTMLElement {
     `
   }
 
-  attributeChangeCallback(name, oldValue, newValue) {
+  attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue === newValue) return;
 
     switch(name) {
@@ -79,6 +79,8 @@ class NoteListContainer extends HTMLElement {
         this.gutter = newValue;
         break;
     }
+
+    this.render();
   }
 }
 
