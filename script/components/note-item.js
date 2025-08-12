@@ -26,14 +26,14 @@ class NoteItem extends HTMLElement {
     this.innerHTML = "";
   }
 
-  set note(value) {
+  note(value) {
     this._note = value;
     this.render();
   }
 
-  get note() {
-    return this._note;
-  }
+  // get note() {
+  //   return this._note;
+  // }
 
   _updateStyle() {
     this._style.textContent = `
