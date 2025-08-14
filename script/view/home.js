@@ -1,7 +1,6 @@
 import { Notes } from "../data/notes.js";
 
 const home = () => {
-  const noteListSuperContainer = document.querySelector(".noteListSuperContainer");
   const noteListContainer = document.querySelector("note-list-container");
 
   const renderNotes = (notes) => {
@@ -12,9 +11,7 @@ const home = () => {
       return noteItemElement;
     });
  
-    console.log("home.js ...noteItemElements", ...noteItemElements);
     noteListContainer.append(...noteItemElements);
-    console.log("home.js noteListSuperContainer", noteListContainer);
   };
 
   const onAddNotesHandler = (e) => {
@@ -23,7 +20,6 @@ const home = () => {
     Notes.addNote(newData);
 
     const updatedNoteList = Notes.getAllNotes();
-    console.log("home updatedNoteList", updatedNoteList);
     renderNotes(updatedNoteList);
   }
 

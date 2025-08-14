@@ -21,7 +21,7 @@ class NoteItem extends HTMLElement {
     this._shadowRoot.appendChild(this._contentWrapper);
   }
 
-  note(value) {
+  set note(value) {
     this._note = value;
     this.render();
   }
@@ -40,20 +40,44 @@ class NoteItem extends HTMLElement {
         padding: 16px;
         margin-bottom: 8px;
         border-radius: 8px;
+        height: 150px;
       }
       h3 {
         margin: 0 0 8px 0;
       }
+      #createdAt {
+        font-size: 0.8em;
+        font-style: italic;
+        font-weight: bold;
+      }
       p {
         margin: 0 0 4px 0;
         color: #555;
+        font-size: 1em;
+        line-height: 1.5em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+      }
+
+      @media screen and (max-width: 445px) {
+        .note-item-container {
+          height: 120px;
+        }
+        #createdAt {
+          font-size: 0.6em;
+        }
+        p {
+          font-size: 0.8em;
+        }
       }
     `
   }
 
   render() {
     this._updateStyle();
-    console.log("note-item this_note", this._note);
 
     const formattedDate = new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
@@ -61,10 +85,17 @@ class NoteItem extends HTMLElement {
       day: 'numeric'
     }).format(new Date(this._note.createdAt));
 
+    const formattedTime = new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    }).format(new Date(this._note.createdAt));
+
     this._contentWrapper.innerHTML = `
       <div class="note-item-container" id="${this._note.id}">
         <h3>${this._note.title}</h3>
-        <p>${formattedDate}</p>
+        <p id="createdAt">${formattedDate}, ${formattedTime}</p>
+        <hr>
         <p>${this._note.body}</p>
       </div>
     `;

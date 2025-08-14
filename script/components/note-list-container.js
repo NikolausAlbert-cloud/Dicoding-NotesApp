@@ -30,6 +30,13 @@ class NoteListContainer extends HTMLElement {
         display: grid;
         grid-template-columns: repeat(${this._column}, 1fr);
         gap: ${this._gutter}px;
+        margin-bottom: 60px;
+      }
+
+      @media screen and (max-width: 445px) {
+        .list {
+          grid-template-columns: 1fr;
+        }
       }
     `
   }
