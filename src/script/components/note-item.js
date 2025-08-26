@@ -41,6 +41,7 @@ class NoteItem extends HTMLElement {
         margin-bottom: 8px;
         border-radius: 8px;
         height: 150px;
+        box-shadow: 0 0 4px 0 #ccc;
       }
       h3 {
         margin: 0 0 8px 0;
