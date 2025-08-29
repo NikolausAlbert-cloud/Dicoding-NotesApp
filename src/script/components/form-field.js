@@ -66,11 +66,11 @@ class FormField extends HTMLElement {
 
     if (title || body) {
       const data = {
-        id: this._generateId(),
+        // id: this._generateId(),
         title,
         body,
-        createdAt: new Date().toISOString(),
-        archived: false
+        // createdAt: new Date().toISOString(),
+        // archived: false
       };
 
       this.dispatchEvent(new CustomEvent("submit-form", {
@@ -86,7 +86,7 @@ class FormField extends HTMLElement {
 
         this._shadowRoot.querySelector("#title").value = "";
         this._shadowRoot.querySelector("#body").value = "";
-        info.innerText = "Post submitted successfully!";
+        // info.innerText = "Post submitted successfully!";
       }, 1000);
 
     } else {
