@@ -79,6 +79,7 @@ function remoteNotes () {
     try {
       const response = await fetch(`${baseUrl}/notes/${noteId}`, options);
       const responseJson = await response.json();
+      console.log("deleteNote: ", responseJson);
 
       if (responseJson.status !== "success") {
         throw new Error(responseJson.message ||"failed delete note");
@@ -109,6 +110,7 @@ function remoteNotes () {
 
     const response = await fetch(`${baseUrl}/notes/${noteId}/archive`, options);
     const responseJson = await response.json();
+    console.log("archivingNote: ", responseJson);
 
     if (responseJson.status !== "success") {
       throw new Error(responseJson.message || "failed archiving note");
@@ -125,6 +127,7 @@ function remoteNotes () {
 
     const response = await fetch(`${baseUrl}/notes/${noteId}/unarchive`, options);
     const responseJson = await response.json();
+    console.log("unarchivingNote: ", responseJson);
 
     if (responseJson.status !== "success") {
       throw new Error(responseJson.message || "failed unarchiving note");
@@ -163,7 +166,8 @@ function remoteNotes () {
     const deleteButton = e.composedPath().find(el => el.classList && el.classList.contains("delete-button"));
     const archiveButton = e.composedPath().find(el => el.classList && el.classList.contains("archive-button"));
     const unarchiveButton = e.composedPath().find(el => el.classList && el.classList.contains("unarchive-button"));
-    const noteId = deleteButton.dataset.id;
+    const noteItem = e.composedPath().find(el => el.classList && el.classList.contains("note-item-container"));
+    const noteId = noteItem.dataset.id;
 
     if (deleteButton) {
       deleteNote(noteId);

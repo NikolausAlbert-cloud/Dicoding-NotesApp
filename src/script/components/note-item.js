@@ -121,7 +121,7 @@ class NoteItem extends HTMLElement {
     }).format(new Date(this._note.createdAt));
 
     this._contentWrapper.innerHTML = `
-      <div class="note-item-container">
+      <div class="note-item-container"  data-id="${this._note.id}">
         <div class="textContainer">
           <h3>${this._note.title}</h3>
           <p id="createdAt">${formattedDate}, ${formattedTime}</p>
@@ -131,21 +131,18 @@ class NoteItem extends HTMLElement {
         <div class="buttonContainer">
           <button
             type="button"
-            data-id="${this._note.id}"
             class="buttonItem delete-button"
           >
             Delete
           </button>
           <button
             type="button"
-            data-id="${this._note.id}"
             class="buttonItem archive-button"
           >
             Archive
           </button>
           <button
             type="button"
-            data-id="${this._note.id}"
             class="buttonItem unarchive-button"
           >
             Unarchive
