@@ -1,22 +1,44 @@
+import Utils from "../utils";
+
 function remoteNotes () {
   const baseUrl = "https://notes-api.dicoding.dev/v2";
+  const noteListSuperContainer = document.querySelector(".noteListSuperContainer");
   const noteListContainer = document.querySelector("note-list-container");
   const formFieldElement = document.querySelector("form-field");
-  const responseMessage = document.querySelector("#response-message");
+  const info = document.querySelector("info");
+  const loading = document.querySelector("#loading");
 
   const showResponseMessage = (message) => {
-    responseMessage.textContent = message;
+    info.textContent = message;
   };
 
+  const showLoading = () => {
+    Array.from(noteListSuperContainer.children).forEach((child) => {
+      Utils.hideElement(child);
+    });
+    Utils.showElement(loading);
+  }
+
+  const showNotes = () => {
+    Array.from(noteListSuperContainer.children).forEach((child) => {
+      Utils.hideElement(child);
+    });
+    Utils.showElement(noteListContainer);
+    Utils.showElement(info);
+  }
+
   const getNotes = async () => {
+    showLoading();
+    
     try {
       const response = await fetch(`${baseUrl}/notes`);
       const responseJson = await response.json();
-      
+      console.log(responseJson);
       if (responseJson.status !== "success") {
-        throw new Error("getNotes message error: NotFound");
+        throw new Error(responseJson.message || "failed getNotes");
       } else {
         renderAllNotes(responseJson.data);
+        showNotes()
       }
     } catch (error) {
       showResponseMessage(error.message);
@@ -39,13 +61,13 @@ function remoteNotes () {
       const responseJson = await response.json();
 
       if (responseJson.status !== "success") {
-        throw new Error("failed create newNote")
+        throw new Error(responseJson.message ||"failed create newNote")
       } else {
         showResponseMessage("success create newNote")
         getNotes();
       }
     } catch (error) {
-      showResponseMessage(error);
+      showResponseMessage(error.message);
     }
   };
 
@@ -58,7 +80,7 @@ function remoteNotes () {
       const responseJson = await response.json();
 
       if (responseJson.status !== "success") {
-        throw new Error("failed delete note");
+        throw new Error(responseJson.message ||"failed delete note");
       } else {
         showResponseMessage("success delete note");
         getNotes();
