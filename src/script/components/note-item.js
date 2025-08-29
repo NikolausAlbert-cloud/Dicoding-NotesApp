@@ -63,6 +63,14 @@ class NoteItem extends HTMLElement {
         -webkit-box-orient: vertical;
       }
 
+      .delete-button {
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 12px;
+        cursor: pointer;}
+
       @media screen and (max-width: 445px) {
         .note-item-container {
           height: 120px;
@@ -93,11 +101,18 @@ class NoteItem extends HTMLElement {
     }).format(new Date(this._note.createdAt));
 
     this._contentWrapper.innerHTML = `
-      <div class="note-item-container" id="${this._note.id}">
+      <div class="note-item-container">
         <h3>${this._note.title}</h3>
         <p id="createdAt">${formattedDate}, ${formattedTime}</p>
         <hr>
         <p>${this._note.body}</p>
+        <button
+          type="button"
+          data-id="${this._note.id}"
+          class="delete-button"
+        >
+          Delete
+        </button>
       </div>
     `;
   }
