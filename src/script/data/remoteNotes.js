@@ -73,6 +73,7 @@ function remoteNotes () {
   };
 
   const deleteNote = async (noteId) => {
+    showLoading();
     const options = {
       method: 'DELETE',
     }
@@ -104,36 +105,47 @@ function remoteNotes () {
   };
 
   const archivingNote = async (noteId) => {
-    const options = {
-      method: 'POST'
-    };
+    showLoading();
 
-    const response = await fetch(`${baseUrl}/notes/${noteId}/archive`, options);
-    const responseJson = await response.json();
-    console.log("archivingNote: ", responseJson);
+    try {
+      const options = {
+        method: 'POST'
+      };
 
-    if (responseJson.status !== "success") {
-      throw new Error(responseJson.message || "failed archiving note");
-    } else {
-      showResponseMessage("success archiving note");
-      getNotes();
+      const response = await fetch(`${baseUrl}/notes/${noteId}/archive`, options);
+      const responseJson = await response.json();
+
+      if (responseJson.status !== "success") {
+        throw new Error(responseJson.message || "failed archiving note");
+      } else {
+        showResponseMessage("success archiving note");
+        getNotes();
+      }
+    } catch (error) {
+      showResponseMessage(error.message);
     }
   };
 
   const unarchivingNote = async (noteId) => {
-    const options = {
-      method: 'POST'
-    };
+    showLoading();
 
-    const response = await fetch(`${baseUrl}/notes/${noteId}/unarchive`, options);
-    const responseJson = await response.json();
-    console.log("unarchivingNote: ", responseJson);
+    try {
+      const options = {
+        method: 'POST'
+      };
 
-    if (responseJson.status !== "success") {
-      throw new Error(responseJson.message || "failed unarchiving note");
-    } else {
-      showResponseMessage("success unarchiving note");
-      getNotes();
+      const response = await fetch(`${baseUrl}/notes/${noteId}/unarchive`, options);
+      const responseJson = await response.json();
+      console.log("unarchivingNote: ", responseJson);
+
+      if (responseJson.status !== "success") {
+        throw new Error(responseJson.message || "failed unarchiving note");
+      } else {
+        showResponseMessage("success unarchiving note");
+        getNotes();
+      }
+    } catch (error) {
+      showResponseMessage(error.message); 
     }
   };
 
