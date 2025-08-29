@@ -7,6 +7,7 @@ function remoteNotes () {
   const formFieldElement = document.querySelector("form-field");
   const info = document.querySelector("info");
   const loading = document.querySelector("#loading");
+  const checkNotesContainer = document.querySelector("check-notes"); 
 
   const showResponseMessage = (message) => {
     info.textContent = message;
@@ -101,15 +102,87 @@ function remoteNotes () {
     noteListContainer.append(...noteItemElements);
   };
 
+  const archivingNote = async (noteId) => {
+    const options = {
+      method: 'POST'
+    };
+
+    const response = await fetch(`${baseUrl}/notes/${noteId}/archive`, options);
+    const responseJson = await response.json();
+
+    if (responseJson.status !== "success") {
+      throw new Error(responseJson.message || "failed archiving note");
+    } else {
+      showResponseMessage("success archiving note");
+      getNotes();
+    }
+  };
+
+  const unarchivingNote = async (noteId) => {
+    const options = {
+      method: 'POST'
+    };
+
+    const response = await fetch(`${baseUrl}/notes/${noteId}/unarchive`, options);
+    const responseJson = await response.json();
+
+    if (responseJson.status !== "success") {
+      throw new Error(responseJson.message || "failed unarchiving note");
+    } else {
+      showResponseMessage("success unarchiving note");
+      getNotes();
+    }
+  };
+
+  const checkUnarchivedNotes = () => {
+    showResponseMessage("showing unarchived notes");
+    getNotes();
+  };
+
+  const checkArchivedNotes = async () => {
+    showLoading();
+    try {
+      const response = await fetch(`${baseUrl}/notes/archived`);
+      const responseJson = await response.json();
+
+      if (responseJson.status !== "success") {
+        throw new Error(responseJson.message || "failed get archived notes");
+      } else {
+        showResponseMessage("success get archived notes");
+        renderAllNotes(responseJson.data);
+        showNotes();
+      };
+    } catch (error) {
+      showResponseMessage(error.message);
+    };
+  };
+
   formFieldElement.addEventListener("submit-form", createNote);
   
   noteListContainer.addEventListener("click", (e) => {
     const deleteButton = e.composedPath().find(el => el.classList && el.classList.contains("delete-button"));
+    const archiveButton = e.composedPath().find(el => el.classList && el.classList.contains("archive-button"));
+    const unarchiveButton = e.composedPath().find(el => el.classList && el.classList.contains("unarchive-button"));
+    const noteId = deleteButton.dataset.id;
 
     if (deleteButton) {
-      const noteId = deleteButton.dataset.id;
-      console.log("noteId: ", noteId);
       deleteNote(noteId);
+    } else if (archiveButton) {
+      archivingNote(noteId);
+    } else if (unarchiveButton) {
+      unarchivingNote(noteId);
+    }
+  });
+
+  checkNotesContainer.addEventListener("click", (e) => {
+    const archivedButton = e.composedPath().find(el => el.classList && el.classList.contains("archive-button"));
+    const unarchivedButton = e.composedPath().find(el => el.classList && el.classList.contains("unarchive-button"));
+    // const noteId = archivedButton.dataset.id || unarchivedButton.dataset.id;
+
+    if (archivedButton) {
+      checkArchivedNotes();
+    } else if (unarchivedButton) {
+      checkUnarchivedNotes();
     }
   });
 

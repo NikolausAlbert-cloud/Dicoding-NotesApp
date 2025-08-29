@@ -86,7 +86,6 @@ class FormField extends HTMLElement {
 
         this._shadowRoot.querySelector("#title").value = "";
         this._shadowRoot.querySelector("#body").value = "";
-        // info.innerText = "Post submitted successfully!";
       }, 1000);
 
     } else {
@@ -101,6 +100,11 @@ class FormField extends HTMLElement {
     this._style.textContent = `
       :host {
         display: block;
+        border-bottom: 1px solid #555;
+      }
+
+      form {
+        margin-bottom: 16px;
       }
 
       .form-group {

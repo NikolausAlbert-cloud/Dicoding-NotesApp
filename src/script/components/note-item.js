@@ -42,6 +42,9 @@ class NoteItem extends HTMLElement {
         border-radius: 8px;
         height: 150px;
         box-shadow: 0 0 4px 0 #ccc;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
       }
       h3 {
         margin: 0 0 8px 0;
@@ -63,13 +66,30 @@ class NoteItem extends HTMLElement {
         -webkit-box-orient: vertical;
       }
 
-      .delete-button {
-        background: red;
-        color: white;
+      .buttonContainer {
+        display: flex;
+        gap: 8px;
+      }
+
+      .buttonItem {
+        color: #fff;
         border: none;
         border-radius: 4px;
         padding: 8px 12px;
-        cursor: pointer;}
+        cursor: pointer;
+      }
+
+      .delete-button {
+        background: red;
+      }
+
+      .archive-button {
+        background: green;
+      }
+        
+      .unarchive-button {
+        background: blue;
+      }
 
       @media screen and (max-width: 445px) {
         .note-item-container {
@@ -102,17 +122,35 @@ class NoteItem extends HTMLElement {
 
     this._contentWrapper.innerHTML = `
       <div class="note-item-container">
-        <h3>${this._note.title}</h3>
-        <p id="createdAt">${formattedDate}, ${formattedTime}</p>
-        <hr>
-        <p>${this._note.body}</p>
-        <button
-          type="button"
-          data-id="${this._note.id}"
-          class="delete-button"
-        >
-          Delete
-        </button>
+        <div class="textContainer">
+          <h3>${this._note.title}</h3>
+          <p id="createdAt">${formattedDate}, ${formattedTime}</p>
+          <hr>
+          <p>${this._note.body}</p>
+        </div>
+        <div class="buttonContainer">
+          <button
+            type="button"
+            data-id="${this._note.id}"
+            class="buttonItem delete-button"
+          >
+            Delete
+          </button>
+          <button
+            type="button"
+            data-id="${this._note.id}"
+            class="buttonItem archive-button"
+          >
+            Archive
+          </button>
+          <button
+            type="button"
+            data-id="${this._note.id}"
+            class="buttonItem unarchive-button"
+          >
+            Unarchive
+          </button>
+        </div>
       </div>
     `;
   }
